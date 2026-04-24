@@ -31,7 +31,7 @@ jobs:
       # 4. Run basic import test (smoke test)
       - name: Check FastAPI app import
         working-directory: backend
-        run: python -c "import app.main"
+        run: python -c "from app.main import app; print('Import OK')"
         
 
       # 5. Run tests (if you add pytest later)
