@@ -32,7 +32,7 @@ jobs:
       - name: Check FastAPI app import
         env:
            PYTHONPATH: backend
-        run: python -c "import main"
+        run: python -c "import app.main"
         
 
       # 5. Run tests (if you add pytest later)
