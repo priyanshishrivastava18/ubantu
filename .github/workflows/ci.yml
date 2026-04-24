@@ -30,8 +30,7 @@ jobs:
 
       # 4. Run basic import test (smoke test)
       - name: Check FastAPI app import
-        env:
-           PYTHONPATH: backend
+        working-directory: backend
         run: python -c "import app.main"
         
 
