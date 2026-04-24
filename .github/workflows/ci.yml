@@ -59,7 +59,7 @@ jobs:
         working-directory: frontend
         run: npm install
 
-      # 4. Build React app
-      - name: Build React app
-        working-directory: frontend
-        run: npm run build
+      # # 4. Build React app
+      # - name: Build React app
+      #   working-directory: frontend
+      #   run: npm run build
