@@ -8,58 +8,63 @@ on:
 
 jobs:
   backend-ci:
+    name: Backend CI
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
 
-      # 3. Install dependencies
       - name: Install dependencies
         working-directory: backend
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pytest
 
-      # # 4. Run basic import test (smoke test)
-      # - name: Check FastAPI app import
-      #   working-directory: backend
-      #   run: python -c "from app.main import app; print('Import OK')"
-        
+      - name: Compile backend
+        working-directory: backend
+        run: python -m compileall app
 
-      # 5. Run tests (if you add pytest later)
+      - name: Check FastAPI app import
+        working-directory: backend
+        run: python -c "from app.main import app; print('Import OK')"
+
       - name: Run tests
         working-directory: backend
         run: |
-          pytest || echo "No tests found, skipping"
+          if find . -name "test_*.py" -o -name "*_test.py" | grep -q .; then
+            pytest
+          else
+            echo "No backend tests found, skipping pytest."
+          fi
 
   frontend-ci:
+    name: Frontend CI
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
-      # 3. Install frontend dependencies
-      - name: Install frontend deps
+      - name: Install dependencies
         working-directory: frontend
-        run: npm install
+        run: npm ci
 
-      # # 4. Build React app
-      # - name: Build React app
-      #   working-directory: frontend
-      #   run: npm run build
+      - name: Build React app
+        working-directory: frontend
+        run: npm run build
