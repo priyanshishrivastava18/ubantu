@@ -3,3 +3,7 @@ uvicorn
 python-multipart
 sqlalchemy
 pydantic
+gunicorn
+PyPDF2
+python-dotenv
+werkzeug
